@@ -16,11 +16,13 @@ int64_t eca_assert_01(const int64_t * const data, const int64_t nsamp, const int
 }
 
 
-// data must contain 0/1 only
-// outp must have size nsamp*nsamp
 int eca_ktr(const int64_t * const data, const int64_t nsamp, const int64_t len,
     const int64_t delta, int64_t * const outp) {
   int64_t *zind;
+
+  if (!eca_assert_01(data, nsamp, len)) {
+    return 0;
+  }
 
   // fill indicator series zind[i,t]: is there an event in series i between t,...,t+delta?
   zind = (int64_t *) calloc(nsamp*len, sizeof (int64_t)); // excess of delta elements for simpler code
@@ -57,11 +59,13 @@ int eca_ktr(const int64_t * const data, const int64_t nsamp, const int64_t len,
   return 1;
 }
 
-// data must contain 0/1 only
-// outp must have size nsamp*nsamp
 int eca_kpr(const int64_t * const data, const int64_t nsamp, const int64_t len,
     const int64_t delta, int64_t * const outp) {
   int64_t *zind;
+
+  if (!eca_assert_01(data, nsamp, len)) {
+    return 0;
+  }
 
   // fill indicator series zind[i,t]: is there an event in series i between t-delta,...,t?
   zind = (int64_t *) calloc(nsamp*len, sizeof (int64_t)); // excess of delta elements for simpler code
